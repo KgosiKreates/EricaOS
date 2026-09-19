@@ -8,5 +8,5 @@ urlpatterns = [
     path("<int:pk>/", views.ListDelete.as_view()),
     path("<int:list_id>/items/<int:pk>/", views.EditListItem.as_view()),
     # # path("<int:pk>/", views.ListDetail.as_view(), name="list-detail"),
-    # path("<int:pk>/delete/", views.ListDelete.as_view(), name="list-delete"), # optional if you like separate delete
+    path("<int:pk>/delete/", views.ListDelete.as_view(), name="list-delete"), # optional if you like separate delete
 ]
