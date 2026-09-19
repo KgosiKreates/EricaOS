@@ -26,11 +26,13 @@ class ListCreate(generics.CreateAPIView):
 
 
 class ListDelete(generics.DestroyAPIView):
-    
+
+    serializer_class = ListSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
-        return List.objects.filter(author=self.request.user)
+        user = self.request.user
+        return List.objects.filter(author=user)
 
 
 class ListView(generics.ListAPIView):
