@@ -283,12 +283,12 @@ function Lists () {
                                                 {listObj.ordered && 
                                                     <span>{`${listItem.order}.`}</span>
                                                 }
-                                                {listObj.checklist && 
-                                                    <input type="checkbox" name="completed" id="completed" />
-                                                }
                                                 <p className="list-item-content" onClick={() => handleListItem(listItem)}>
                                                     {listItem.name}
                                                 </p>
+                                                {listObj.checklist && 
+                                                    <input type="checkbox" name="completed" id="completed" />
+                                                }
                                             </li>
                                         ))}
                                         <li

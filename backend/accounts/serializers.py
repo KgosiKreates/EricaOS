@@ -13,7 +13,9 @@ class SignupSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         # Check email uniqueness
         if User.objects.filter(email=attrs.get("email")).exists():
-            raise serializers.ValidationError({"email": "Email already in use."})
+            raise serializers.ValidationError({
+                "email": "This email is already in use."
+            })
 
         return attrs
 
@@ -38,11 +40,11 @@ class LoginSerializer(serializers.Serializer):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise serializers.ValidationError("Invalid credentials.")
+            raise serializers.ValidationError("Email or Password incorrect")
 
         # Check password
         if not user.check_password(password):
-            raise serializers.ValidationError("Invalid credentials.")
+            raise serializers.ValidationError("Email or Password incorrect")
 
         if not user.is_active:
             raise serializers.ValidationError("User is inactive.")

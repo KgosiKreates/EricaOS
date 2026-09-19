@@ -35,12 +35,13 @@ ALLOWED_HOSTS = [
     '.onrender.com',
     '192.168.18.133',
     '127.0.0.1',
-    '192.168.2.185'
+    '192.168.2.185',
+    '192.168.0.27',
 ]
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
-        'http://localhost'
+        'http://localhost',
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
