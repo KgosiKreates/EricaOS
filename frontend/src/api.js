@@ -36,6 +36,20 @@ api.interceptors.response.use(
 
     async (error) => {
         const originalRequest = error.config;
+        
+        if (!error.response) {
+            if (!originalRequest._networkRetry) {
+                originalRequest._networkRetry = true;
+                try {
+                    return await api(originalRequest);
+                } catch (retryErr) {
+                    retryErr.message = "Slow or no connection. Check your internet and try again.";
+                    return Promise.reject(retryErr);
+                }
+            }
+            error.message = "Slow or no connection. Check your internet and try again.";
+            return Promise.reject(error);
+        }
 
         // Don't try refreshing after failed auth requests.
         const authEndpoints = [
@@ -54,15 +68,19 @@ api.interceptors.response.use(
             originalRequest._retry = true;
 
             const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-
+            
+            // checks if refreshToken exists and isn't undefined. if so, clear both refresh and access and login again
             if (!refreshToken || refreshToken === "undefined") {
                 localStorage.removeItem(ACCESS_TOKEN);
                 localStorage.removeItem(REFRESH_TOKEN);
 
                 window.location.href = "/login";
+
+                error.message = "Session expired. Please login again."
                 return Promise.reject(error);
             }
-
+            
+            // if refresh token exists, submit it to backend to request a new access token before retrying the initial request
             try {
                 const res = await api.post("/accounts/token/refresh/", {
                     refresh: refreshToken,
@@ -84,7 +102,9 @@ api.interceptors.response.use(
                 localStorage.removeItem(REFRESH_TOKEN);
 
                 window.location.href = "/login";
-
+                
+                err.message = "Session expired. Please login again.";
+                
                 return Promise.reject(err);
             }
         }

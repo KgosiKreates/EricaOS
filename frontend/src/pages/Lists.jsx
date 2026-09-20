@@ -111,7 +111,12 @@ function Lists () {
 
         } catch (err) {
             console.error(err);
-            alert("Failed to create list");
+
+            if (err.code == "ERR_NETWORK") {
+                toast.error(err.message)
+            } else {
+                toast.error("Failed to create list");
+            }
         } finally {
             setLoading(false);
         }
