@@ -32,7 +32,7 @@ function ExchangeRateCard() {
                                         <span>{pairing.name}</span>
                                     </h3>
                                     <p className="site-p exchange-rate-value">
-                                        {Math.round(pairing.value * 100) / 100}
+                                        {Math.round(pairing.value * 1000) / 1000}
                                     </p>
                                 </li>
                             ))}
